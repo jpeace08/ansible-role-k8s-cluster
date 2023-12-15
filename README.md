@@ -24,7 +24,7 @@ This role accept this variables:
 
 | Var   | Required |  Default | Desc |
 | ------- | ------- | ----------- |  ----------- |
-| `kubernetes_subnet`       | `yes`       |  `192.168.25.0/24` | Subnet where Kubernetess will be deployed. If the VM or bare metal server has more than one interface, Ansible will filter the interface used by Kubernetes based on the interface subnet |
+| `kubernetes_subnet`       | `yes`       |  `192.168.10.0/24` | Subnet where Kubernetess will be deployed. If the VM or bare metal server has more than one interface, Ansible will filter the interface used by Kubernetes based on the interface subnet |
 | `disable_firewall`       | `no`       | `no`       | If set to yes Ansible will disable the firewall.   |
 | `kubernetes_version`       | `no`       | `1.25.0`       | Kubernetes version to install  |
 | `kubernetes_cri`       | `no`       | `containerd`       | Kubernetes [CRI](https://kubernetes.io/docs/concepts/architecture/cri/) to install.   |
@@ -34,7 +34,7 @@ This role accept this variables:
 | `kubernetes_service_subnet`       | `no`       | `10.96.0.0/12`       | Kubernetes service subnet  |
 | `kubernetes_api_port`       | `no`       | `6443`       | kubeapi listen port  |
 | `setup_vip`       | `no`       | `no`       | Setup kubernetes VIP addres using [kube-vip](https://kube-vip.io/)   |
-| `kubernetes_vip_ip`       | `no`       | `192.168.25.225`       | **Required** if setup_vip is set to *yes*. Vip ip address for the control plane  |
+| `kubernetes_vip_ip`       | `no`       | `192.168.10.225`       | **Required** if setup_vip is set to *yes*. Vip ip address for the control plane  |
 | `kubevip_version`       | `no`       | `v0.4.3`       | kube-vip container version  |
 | `install_longhorn`       | `no`       | `no`       | Install [Longhorn](#longhorn), Cloud native distributed block storage for Kubernetes.  |
 | `longhorn_version`       | `no`       | `v1.3.1`       | Longhorn release.  |
@@ -84,7 +84,7 @@ In the Vagrantfile you can inject your public ssh key directly in the authorized
 To use this role you follow the example in the [examples/](examples/) dir. Adjust the hosts.ini file with your hosts and run the playbook:
 
 ```
-lorenzo@mint-virtual:~$ ansible-playbook -i hosts-ubuntu.ini site.yml -e kubernetes_init_host=master1
+jpeace08@mint-virtual:~$ ansible-playbook -i hosts-ubuntu.ini site.yml -e kubernetes_init_host=master1
 
 PLAY [kubemaster] ***************************************************************************************************************************************************
 
@@ -199,7 +199,7 @@ TASK [ansible-role-kubernetes : include_tasks] *********************************
 included: /home/jpeace08/workspaces-local/ansible-role-kubernetes/tasks/install_nginx_ingress.yml for worker1, worker2, worker3
 
 TASK [ansible-role-kubernetes : Check if ingress-nginx is installed] ************************************************************************************************
-changed: [worker1 -> master1(192.168.25.110)]
+changed: [worker1 -> master1(192.168.10.110)]
 
 TASK [ansible-role-kubernetes : Install ingress-nginx] **************************************************************************************************************
 skipping: [worker1]
@@ -318,12 +318,12 @@ ingress-nginx-controller-admission      ClusterIP   10.105.11.11     <none>     
 we can see the nginx ingress controller listening port, in this case the http port is 30080 and  the https port is 30443. From an external machine we can test the ingress controller:
 
 ```
-lorenzo@mint-virtual:~$ curl -v http://192.168.25.110:30080
-*   Trying 192.168.25.110:30080...
+jpeace08@mint-virtual:~$ curl -v http://192.168.10.110:30080
+*   Trying 192.168.10.110:30080...
 * TCP_NODELAY set
-* Connected to 192.168.25.110 (192.168.25.110) port 30080 (#0)
+* Connected to 192.168.10.110 (192.168.10.110) port 30080 (#0)
 > GET / HTTP/1.1
-> Host: 192.168.25.110:30080
+> Host: 192.168.10.110:30080
 > User-Agent: curl/7.68.0
 > Accept: */*
 > 
@@ -341,5 +341,5 @@ lorenzo@mint-virtual:~$ curl -v http://192.168.25.110:30080
 <hr><center>nginx</center>
 </body>
 </html>
-* Connection #0 to host 192.168.25.110 left intact
+* Connection #0 to host 192.168.10.110 left intact
 ```

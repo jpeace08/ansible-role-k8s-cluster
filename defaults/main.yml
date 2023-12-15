@@ -3,17 +3,17 @@
 disable_firewall: no
 
 kubernetes_version: 1.27.3
-kubernetes_cri: containerd
+kubernetes_cri: docker
 kubernetes_cni: flannel
 kubernetes_dns_domain: cluster.local
 kubernetes_pod_subnet: 10.244.0.0/16
 kubernetes_service_subnet: 10.96.0.0/12
 kubernetes_api_port: 6443
 
-kubernetes_subnet: 192.168.25.0/24
+kubernetes_subnet: 192.168.10.0/24
 
 setup_vip: no
-kubernetes_vip_ip: 192.168.25.225
+kubernetes_vip_ip: 192.168.10.225
 
 kubevip_version: v0.6.0
 

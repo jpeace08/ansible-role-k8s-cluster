@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
           v.memory = 2048
           v.cpus = 2
       end
-      node.vm.network "private_network", ip: "192.168.25.11#{i}"
+      node.vm.network "private_network", ip: "192.168.10.11#{i}"
       node.vm.provision "shell", inline: $script
       node.vm.provision "shell", inline: "echo hello from node #{i}"
     end
