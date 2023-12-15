@@ -3,7 +3,7 @@
 disable_firewall: no
 
 kubernetes_version: 1.27.3
-kubernetes_cri: docker
+kubernetes_cri: containerd
 kubernetes_cni: flannel
 kubernetes_dns_domain: cluster.local
 kubernetes_pod_subnet: 10.244.0.0/16
