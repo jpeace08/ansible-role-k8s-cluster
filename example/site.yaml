@@ -1,0 +1,16 @@
+---
+- hosts: kubemaster
+  become: yes
+  remote_user: sysadmin
+  roles: 
+    - role: ansible-role-k8s-cluster
+  vars_files:
+    - vars.yaml
+
+- hosts: kubeworker 
+  become: yes
+  remote_user: sysadmin
+  roles: 
+    -  role: ansible-role-k8s-cluster
+  vars_files:
+    - vars.yaml
